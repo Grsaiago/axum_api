@@ -44,8 +44,8 @@ The second thing is that we initialize a [Tokio Tcp Listener](https://docs.rs/to
 There is A LOT to unpack in these few lines:
 
 You can think of Rust matches like a powered up switch case!
-In Rust, match are expressions, which means that they return a value,
-So we can have the result of a match expression be binded to a variable.
+In Rust, 'match' are expressions, which means that they return a value,
+so the result of a match expression can be binded to a variable.
 
 The following in Rust:
 
@@ -58,7 +58,7 @@ let result_of_match = match some_result_returning_fn() {
 
 Can be thought of as something like this in C:
 
-```C
+```c++
 int result_of_match;
 int return_of_some_result_returning_fn;
 
