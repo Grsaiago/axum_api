@@ -3,11 +3,11 @@
 ## Dependencies
 
 We add dotenvy for .env management, and for Axum we need to add:
-    - Axum
-    - The Tokio runtime (here added with 'full' features make our lifes easier)
-    - Tower for middlewares
+- Axum
+- The Tokio runtime (here added with 'full' features make our lifes easier)
+- Tower for middlewares
 
-Just run the following:
+To add everything, just run:
 
 ```sh
 cargo add dotenvy axum tokio tower -F tokio/full
@@ -15,10 +15,8 @@ cargo add dotenvy axum tokio tower -F tokio/full
 
 ## How To
 
-The first thing is just call ``dotenvy::dotenv()`` to load our env vars from the
-.env file.
-
-The second thing is that we initialize a [Tokio Tcp Listener](https://docs.rs/tokio/latest/tokio/net/struct.TcpListener.html).
+The first line is just a call to ``dotenvy::dotenv()`` to load our env vars from the .env file.
+We then initialize a [Tokio Tcp Listener](https://docs.rs/tokio/latest/tokio/net/struct.TcpListener.html).
 
 ```Rust
     let host = match std::env::var("SERVER_HOST") {
