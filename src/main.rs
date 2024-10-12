@@ -1,4 +1,6 @@
-use std::env::VarError;
+mod routers;
+use routers::healthcheck::*;
+use std::{env::VarError, sync::Arc, time::Instant};
 
 const DEFAULT_HOST: &str = "0.0.0.0";
 const DEFAULT_PORT: &str = "8080";
@@ -60,11 +62,22 @@ async fn main() {
         }
     };
 
-    // This creates the router
-    let app = axum::Router::new().route(
-        "/healthcheck",
-        axum::routing::get(|| async { "We're up and running!" }),
-    );
+    // we now have a struct that encapsulates our app information
+    // the struct is nicely wrapped arround an arc so we don't have to clone
+    // the string every time we have a new incoming request hitting /healthcheck
+    let app_info = Arc::new(AppInfo {
+        uptime: Instant::now(),
+        host_port: host_port.clone(),
+    });
+
+    // Same as before, This creates the router
+    let app = axum::Router::new()
+        .route(
+            "/healthcheck",
+            axum::routing::get(routers::healthcheck::healthcheck),
+        )
+        // but not the state is made available to all handlers like this
+        .with_state(app_info);
 
     println!("Info: Serving on {}", &host_port);
     if let Err(err) = axum::serve(listener, app).await {
