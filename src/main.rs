@@ -66,7 +66,8 @@ async fn main() {
         axum::routing::get(|| async { "We're up and running!" }),
     );
 
+    println!("Info: Serving on {}", &host_port);
     if let Err(err) = axum::serve(listener, app).await {
-        eprint!("Error on axum::serve: {}", err);
+        eprintln!("Error: axum::serve: {}", err);
     }
 }
