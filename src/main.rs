@@ -1,5 +1,5 @@
 mod routers;
-use routers::healthcheck::*;
+use routers::healthcheck::{self, *};
 use std::{env::VarError, sync::Arc, time::Instant};
 
 const DEFAULT_HOST: &str = "0.0.0.0";
@@ -70,13 +70,10 @@ async fn main() {
         host_port: host_port.clone(),
     });
 
-    // Same as before, This creates the router
+    // Now we'll compose the app's 'main' router by nesting the healtchcheck router
     let app = axum::Router::new()
-        .route(
-            "/healthcheck",
-            axum::routing::get(routers::healthcheck::healthcheck),
-        )
-        // but not the state is made available to all handlers like this
+        .nest("/", get_router(app_info.clone()))
+        // we call .with_state to add a state to this router
         .with_state(app_info);
 
     println!("Info: Serving on {}", &host_port);
